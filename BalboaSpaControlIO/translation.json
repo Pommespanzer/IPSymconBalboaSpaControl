@@ -1,0 +1,12 @@
+{
+    "translations": {
+        "de": {
+            "Disable instance": "Instanz deaktivieren",
+            "Account data": "Anmeldedaten",
+            "Log in with your Balboa Spa Control account, created in your Spa Control app.": "Melde dich mit deinem Balboa Spa Control Konto an, das du in der App 'Spa Control' über den Menüpunkt 'Cloud Connect' erstellt hast.",
+            "Username": "Benutzername",
+            "Password": "Passwort",
+            "Test access": "Zugang testen"
+        }
+    }
+}

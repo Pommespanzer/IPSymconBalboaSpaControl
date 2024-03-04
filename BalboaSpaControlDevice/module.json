@@ -1,0 +1,16 @@
+{
+    "id": "{42D2DFFB-E7AE-3BCA-8F00-C1894AEA875E}",
+    "name": "BalboaSpaControlDevice",
+    "type": 3,
+    "vendor": "",
+    "aliases": [],
+    "parentRequirements": [
+        "{5F0B449F-BA34-23D5-C27F-191DA3F16F08}"
+    ],
+    "childRequirements": [],
+    "implemented": [
+        "{CDA2D82D-F6F5-387B-97E3-674EF191ADA5}"
+    ],
+    "prefix": "BalboaSpaControl",
+    "url": ""
+}

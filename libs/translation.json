@@ -1,0 +1,13 @@
+{
+  "translations": {
+    "de": {
+      "__variableprofile__": "BalboaSpaControl.OnOff",
+      "Off": "Aus",
+      "On": "An",
+
+      "__variableprofile__": "BalboaSpaControl.YesNo",
+      "No": "Nein",
+      "Yes": "Ja"
+    }
+  }
+}

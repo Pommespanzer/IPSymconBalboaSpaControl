@@ -1,0 +1,26 @@
+{
+    "translations": {
+        "de": {
+            "Balboa Spa Control Device": "Balboa Spa Control | Gerät",
+            "Disable instance": "Instanz deaktivieren",
+            "Device Configuration": "Gerätekonfiguration",
+            "Update interval": "Aktualisierungsintervall",
+            "seconds": "Sekunden",
+            "Update data": "Daten aktualisieren",
+            "Pump #1": "Pumpe #1",
+            "Pump #2": "Pumpe #2",
+            "Blower": "Luftdüsen",
+            "Light #1": "Licht #1",
+            "Light #2": "Licht #2",
+            "Heating Mode": "Heizungsmodus",
+            "Heating": "Heizung aktiv",
+            "Current temperature": "Aktuelle Temperatur",
+            "Target temperature": "Gewünschte Temperatur",
+            "Temperatur Range": "Temperaturbereich",
+            "Current Filter Mode": "Filtermodus",
+            "24H Time Format": "24 Stunden Zeitformat",
+            "Panel Hour": "Uhrzeit Stunde",
+            "Panel Minute": "Uhrzeit Minute"
+        }
+    }
+}

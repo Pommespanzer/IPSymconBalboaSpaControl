@@ -1,0 +1,16 @@
+{
+    "id": "{36609F68-103B-B0CC-FA97-45FA2E1F436D}",
+    "name": "BalboaSpaControlIO",
+    "type": 1,
+    "vendor": "",
+    "aliases": [],
+    "parentRequirements": [],
+    "childRequirements": [
+        "{CDA2D82D-F6F5-387B-97E3-674EF191ADA5}"
+    ],
+    "implemented": [
+        "{5F0B449F-BA34-23D5-C27F-191DA3F16F08}"
+    ],
+    "prefix": "BalboaSpaControl",
+    "url": ""
+}
