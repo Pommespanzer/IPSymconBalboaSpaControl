@@ -20,8 +20,8 @@
 Dieses Modul ermöglicht die Steuerung von Whirlpools mit einer Steuerung der Firma [Balboa](https://balboawater.com/).  
 Zur Steuerung ist ein verbautes und eingerichtetes WLAN-Modul erforderlich und der Whirlpool muss über die [Spa Control](https://apps.apple.com/de/app/spa-control-bwa/id469882268) App mit der Balboa-Cloud verbunden sein.  
 
-Das Modul basiert nutzt die API von Balboa, die jedoch von Balboa selbst nicht öffentlich dokumentiert wurde und daher nicht alle Funktionen und Möglichkeiten bekannt sind.  
-Manche Funktionen können sich daher - je nach Whirlpool-Modell und Ausstattung - unterschiedlich verhalten oder auch nicht funktionieren.
+Das Modul nutzt die API von Balboa, die jedoch von Balboa selbst nicht öffentlich dokumentiert wurde.
+Manche Funktionen können sich daher - je nach Whirlpool-Modell und Ausstattung - anders verhalten.
 
 ### Funktionsumfang
 
