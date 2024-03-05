@@ -115,6 +115,12 @@ Temperaturbereich ändern.
 `BalboaSpaControl_SetTargetTemperature(integer $InstanceID, string $Temperature)`<br>
 Gewünschte Temperatur einstellen. Erlaubte Werte sind abhängig vom Temperaturbereich:  
 
+`BalboaSpaControl_GetPanelData($InstanceID)`<br>
+Liefert alle Daten des Whirlpool-Panels. Liefert entweder `PanelUpdate` oder `false`
+
+`BalboaSpaControl_GetDeviceConfiguration($InstanceID)`<br>
+Liefert die Gerätekonfiguration. Liefert entweder `DeviceConfiguration` oder `false`
+
 #### Erlaubte Temperaturen  
 
 | Einheit    | Temperaturbereich | Min. | Max. |
@@ -124,6 +130,54 @@ Gewünschte Temperatur einstellen. Erlaubte Werte sind abhängig vom Temperaturb
 | Fahrenheit | Low               | 50   | 99   | 
 | Fahrenheit | High              | 80   | 104  | 
 
+#### PanelUpdate
+
+| Funktion                    | Datentyp     | Beschreibung                                             |
+|:----------------------------|:-------------|:---------------------------------------------------------|
+| getByteData()               | array, mixed | Liefert alle Rohdaten, die von der API übermittelt wurden |
+| getHeatMode()               | string       | Aktueller Heizmodus                                      | 
+| isHeating()                 | bool         | Heizung aktiv                                            | 
+| getTemperatureRange()       | string       | Eingestellter Temperaturbereich                          |
+| isTemperatureScaleCelsius() | bool         | Ob die Temperatureinheit Celsius ist                     |
+| getCurrentTemperature()     | float        | Aktuelle Temperatur                                      | 
+| getTargetTemperature()      | float        | Eingestellte Zieltemperatur                              | 
+| getFilterMode()             | string       | Aktueller Filtermodus                                    | 
+| getHour()                   | string       | Aktuelle Stunde                                          | 
+| getMinute()                 | string       | Aktuelle Minute                                          | 
+| is24HourFormat()            | bool         | Ost das Zeitformat als 24H-Format eingestellt ist        | 
+| isMisterOn()                | bool         | Mister an                                                | 
+| isLight1On()                | bool         | Licht 1 an                                               | 
+| isLight2On()                | bool         | Licht 2 an                                               | 
+| isAux1On()                  | bool         | Aux 1 an                                                 | 
+| isAux2On()                  | bool         | Aux 2 an                                                 | 
+| getPump1Status()            | string       | Status Pumpe 1                                           | 
+| getPump2Status()            | string       | Status Pumpe 2                                           | 
+| getPump3Status()            | string       | Status Pumpe 3                                           | 
+| getPump4Status()            | string       | Status Pumpe 4                                           | 
+| getPump5Status()            | string       | Status Pumpe 5                                           | 
+| getPump6Status()            | string       | Status Pumpe 6                                           | 
+| getBlowerStatus()            | string       | Luftdüsen an                                             | 
+| getPumpStatus()            | string       | Status Zirkulationspumpe                                 | 
+| getWifiStatus()            | string       | Status WiFi Verbindung des Moduls                        | 
+
+#### DeviceConfiguration
+
+| Funktion      | Datentyp     | Beschreibung                                              |
+|:--------------|:-------------|:----------------------------------------------------------|
+| getByteData() | array, mixed | Liefert alle Rohdaten, die von der API übermittelt wurden |
+| hasPump0()    | bool         | Zirkulationspumpe vorhanden                               |
+| hasPump1()    | bool         | Pumpe 1 vorhanden                                         |
+| hasPump2()    | bool         | Pumpe 2 vorhanden                                         |
+| hasPump3()    | bool         | Pumpe 3 vorhanden                                         |
+| hasPump4()    | bool         | Pumpe 4 vorhanden                                         |
+| hasPump5()    | bool         | Pumpe 5 vorhanden                                         |
+| hasPump6()    | bool         | Pumpe 6 vorhanden                                         |
+| hasLight1()   | bool         | Licht 1 vorhanden                                         |
+| hasLight2()   | bool         | Licht 2 vorhanden                                         |
+| hasAux1()     | bool         | Aux 1 vorhanden                                           |
+| hasAux2()     | bool         | Aux 2 vorhanden                                           |
+| hasBlower()   | bool         | Luftdüsen vorhanden                                       |
+| hasMister()   | bool         | Mister vorhanden                                          |
 
 ## 5. Konfiguration
 
@@ -142,5 +196,11 @@ Gewünschte Temperatur einstellen. Erlaubte Werte sind abhängig vom Temperaturb
 
 ## 6. Versions-Historie
 
-- 0.1 @ 02.11.2023
-	- Initiale Version  
+- 0.2 @ 05.03.2024
+    - Neue Funktion `BalboaSpaControl_GetPanelData($InstanceID): PanelUpdate` hinzugefügt
+    - Neue Funktion `BalboaSpaControl_GetDeviceConfiguration($InstanceID): DeviceConfiguration` hinzugefügt
+    - Fehler behoben, dass Cloud Connect seltsame Werte zurückliefert, wenn das WLAN Modul Verbindungsprobleme hat
+    - Übersetzungen hinzugefügt
+
+- 0.1 @ 03.03.2024
+    - Initiale Version  

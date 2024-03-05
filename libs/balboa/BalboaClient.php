@@ -308,7 +308,7 @@ class BalboaClient
     }
 
     /**
-     * @param int $light
+     * @param int $aux
      *
      * @return bool
      */
@@ -318,7 +318,7 @@ class BalboaClient
     }
 
     /**
-     * @param int $light
+     * @param int $aux
      *
      * @return bool
      */
@@ -332,7 +332,7 @@ class BalboaClient
      * ---------
      *
      * 1. Set temperature to 35 °C
-     * BalboaClient::deviceRequest('35', BalboaClient::TARGET_SET_TEMP)
+     * BalboaClient::deviceRequest(BalboaClient::TARGET_SET_TEMP, '35')
      *
      * 2. Activate Pump 2
      * BalboaClient::deviceRequest(BalboaClient::TARGET_BUTTON, BalboaClient::PUMP_BUTTON_MAP[2],

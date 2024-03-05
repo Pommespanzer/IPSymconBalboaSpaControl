@@ -140,7 +140,7 @@ class BalboaSpaControlDevice extends IPSModule
 
         $this->MaintainVariable('HeatMode', $this->Translate('Heating Mode'), VARIABLETYPE_STRING, 'BalboaSpaControl.HeatMode', $vPos++, true);
         $this->MaintainVariable('Heating', $this->Translate('Heating'), VARIABLETYPE_BOOLEAN, 'BalboaSpaControl.YesNo', $vPos++, true);
-        $this->MaintainVariable('TemperatureCelsius', $this->Translate('Temperature in celcius'), VARIABLETYPE_BOOLEAN, 'BalboaSpaControl.YesNo', $vPos++, true);
+        $this->MaintainVariable('TemperatureCelsius', $this->Translate('Temperature in celsius'), VARIABLETYPE_BOOLEAN, 'BalboaSpaControl.YesNo', $vPos++, true);
         $this->MaintainVariable('CurrentTemperature', $this->Translate('Current temperature'), VARIABLETYPE_FLOAT, 'BalboaSpaControl.Temperature', $vPos++, true);
         $this->MaintainVariable('TargetTemperature', $this->Translate('Target temperature'), VARIABLETYPE_FLOAT, 'BalboaSpaControl.Temperature', $vPos++, true);
         $this->MaintainVariable('TemperatureRange', $this->Translate('Temperature Range'), VARIABLETYPE_STRING, 'BalboaSpaControl.TemperatureRange', $vPos++, true);
@@ -463,7 +463,7 @@ class BalboaSpaControlDevice extends IPSModule
         $result = true;
         switch ($ident) {
             case 'UpdateData':
-                $this->UpdateData();
+                $result = $this->UpdateData();
                 break;
             default:
                 $result = false;
@@ -512,24 +512,7 @@ class BalboaSpaControlDevice extends IPSModule
             return;
         }
 
-        $this->SetUpdateInterval();
-
-        $result = $this->RequestParent('GetPanelUpdate');
-        if ($result === null || $result === 'null') {
-            $this->SendDebug(__FUNCTION__, 'No panel data found => skip', 0);
-            return;
-        }
-        $data = json_decode($result, true);
-
-        if (!isset($data['byteData'])) {
-            $this->SendDebug(__FUNCTION__, 'No byte data found in result data.', 0);
-            return;
-        }
-
-        $panelUpdate = new PanelUpdate($data['byteData']);
-        $this->updatePanelData($panelUpdate);
-
-        return $panelUpdate;
+        return $this->GetPanelData();
     }
 
     /**
@@ -559,6 +542,54 @@ class BalboaSpaControlDevice extends IPSModule
         $this->SetValue('CurrentHour', $panelUpdate->getHour());
         $this->SetValue('CurrentMinute', $panelUpdate->getMinute());
         $this->SetValue('WiFiStatus', $panelUpdate->getWifiStatus());
+    }
+
+    /**
+     * @return PanelUpdate|null
+     */
+    public function GetPanelData(): ?PanelUpdate
+    {
+        $this->SetUpdateInterval();
+
+        $result = $this->RequestParent('GetPanelUpdate');
+        if ($result === 'null') {
+            $this->SendDebug(__FUNCTION__, 'No panel data found. => skip', 0);
+            return null;
+        }
+        $data = json_decode($result, true);
+
+        if (!isset($data['byteData'])) {
+            $this->SendDebug(__FUNCTION__, 'No byte data found in result data.', 0);
+            return null;
+        }
+
+        $panelUpdate = new PanelUpdate($data['byteData']);
+        $this->updatePanelData($panelUpdate);
+
+        return $panelUpdate;
+    }
+
+    /**
+     * @return DeviceConfiguration|null
+     */
+    public function GetDeviceConfiguration(): ?DeviceConfiguration
+    {
+        $result = $this->RequestParent('GetDeviceConfiguration');
+        if ($result === 'null') {
+            $this->SendDebug(__FUNCTION__, 'No device configuration found. => skip', 0);
+            return null;
+        }
+        $data = json_decode($result, true);
+
+        if (!isset($data['byteData'])) {
+            $this->SendDebug(__FUNCTION__, 'No byte data found in result data.', 0);
+            return null;
+        }
+
+        $panelUpdate = new DeviceConfiguration($data['byteData']);
+        $this->updatePanelData($panelUpdate);
+
+        return $panelUpdate;
     }
 
     /**

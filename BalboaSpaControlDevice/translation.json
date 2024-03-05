@@ -20,7 +20,8 @@
             "Current Filter Mode": "Filtermodus",
             "24H Time Format": "24 Stunden Zeitformat",
             "Panel Hour": "Uhrzeit Stunde",
-            "Panel Minute": "Uhrzeit Minute"
+            "Panel Minute": "Uhrzeit Minute",
+            "Temperature in celsius": "Temperatur in Celsius"
         }
     }
 }

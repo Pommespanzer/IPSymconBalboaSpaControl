@@ -320,6 +320,16 @@ class BalboaSpaControlIO extends IPSModule
                     'label'   => 'Toggle Blower',
                     'onClick' => 'IPS_RequestAction(' . $this->InstanceID . ', "TestToggleBlower", "");',
                 ],
+                [
+                    'type'    => 'Button',
+                    'label'   => 'Toggle Light #1',
+                    'onClick' => 'IPS_RequestAction(' . $this->InstanceID . ', "TestToggleLight", 1);',
+                ],
+                [
+                    'type'    => 'Button',
+                    'label'   => 'Toggle Light #2',
+                    'onClick' => 'IPS_RequestAction(' . $this->InstanceID . ', "TestToggleLight", 2);',
+                ],
             ],
         ];
 
@@ -331,12 +341,12 @@ class BalboaSpaControlIO extends IPSModule
                 $this->GetInstallVarProfilesFormItem(),
                 [
                     'type'    => 'Button',
-                    'label'   => 'Display bearer token',
+                    'label'   => 'Display access token',
                     'onClick' => 'IPS_RequestAction(' . $this->InstanceID . ', "DisplayAccessToken", "");',
                 ],
                 [
                     'type'    => 'Button',
-                    'label'   => 'Clear bearer token',
+                    'label'   => 'Clear access token',
                     'onClick' => 'IPS_RequestAction(' . $this->InstanceID . ', "ClearAccessToken", "");',
                 ],
                 $this->GetApiCallStatsFormItem(),
@@ -451,19 +461,19 @@ class BalboaSpaControlIO extends IPSModule
         $temperatureUnit = $panelUpdate->isTemperatureScaleCelsius() ? '°C' : 'F';
 
         $popupMessage = [
-            'Panel data',
-            sprintf('Heat mode: %s', $panelUpdate->getHeatMode()),
-            sprintf('Is heating: %s', $panelUpdate->isHeating() ? 'Yes' : 'No'),
-            sprintf('Current temperature: %s %s', $panelUpdate->getCurrentTemperature(), $temperatureUnit),
-            sprintf('Target temperature: %s %s', $panelUpdate->getTargetTemperature(), $temperatureUnit),
-            sprintf('Temperature range: %s', $panelUpdate->getTemperatureRange()),
-            sprintf('Filter mode: %s', $panelUpdate->getFilterMode()),
-            sprintf('Blower status: %s', $panelUpdate->getBlowerStatus()),
-            sprintf('Pump 1 status: %s', $panelUpdate->getPump1Status()),
-            sprintf('Pump 2 status: %s', $panelUpdate->getPump2Status()),
-            sprintf('Light 1 status: %s', $panelUpdate->isLight1On() ? 'Yes' : 'No'),
-            sprintf('Light 2 status: %s', $panelUpdate->isLight2On() ? 'Yes' : 'No'),
-            sprintf('WiFi status: %s', $panelUpdate->getWifiStatus()),
+            $this->Translate('Panel data'),
+            sprintf('%s: %s', $this->Translate('Heating mode'), $panelUpdate->getHeatMode()),
+            sprintf('%s: %s', $this->Translate('Heating'), $panelUpdate->isHeating() ? $this->Translate('Yes') : $this->Translate('No')),
+            sprintf('%s: %s %s', $this->Translate('Current temperature'), $panelUpdate->getCurrentTemperature(), $temperatureUnit),
+            sprintf('%s: %s %s', $this->Translate('Target temperature'), $panelUpdate->getTargetTemperature(), $temperatureUnit),
+            sprintf('%s: %s', $this->Translate('Temperature range'), $panelUpdate->getTemperatureRange()),
+            sprintf('%s: %s', $this->Translate('Filter Mmde'), $panelUpdate->getFilterMode()),
+            sprintf('%s: %s', $this->Translate('Blower status'), $panelUpdate->getBlowerStatus()),
+            sprintf('%s: %s', $this->Translate('Pump 1 status'), $panelUpdate->getPump1Status()),
+            sprintf('%s: %s', $this->Translate('Pump 2 status'), $panelUpdate->getPump2Status()),
+            sprintf('%s: %s', $this->Translate('Light 1 status'), $panelUpdate->isLight1On() ? $this->Translate('Yes') : $this->Translate('No')),
+            sprintf('%s: %s', $this->Translate('Light 2 status'), $panelUpdate->isLight2On() ? $this->Translate('Yes') : $this->Translate('No')),
+            sprintf('%s: %s', $this->Translate('WiFi status'), $panelUpdate->getWifiStatus()),
         ];
 
         $this->SendDebug(__FUNCTION__, 'txt=' . print_r($popupMessage, true), 0);
@@ -483,25 +493,30 @@ class BalboaSpaControlIO extends IPSModule
         $this->handleLastResponse($client->getApi()->getLastResponse());
 
         $popupMessage = [
-            'Device configuration',
-            sprintf('Has mister: %s', $deviceConfiguration->hasMister() ? 'Yes' : 'No'),
-            sprintf('Has pump 1: %s', $deviceConfiguration->hasPump1() ? 'Yes' : 'No'),
-            sprintf('Has pump 2: %s', $deviceConfiguration->hasPump2() ? 'Yes' : 'No'),
-            sprintf('Has pump 3: %s', $deviceConfiguration->hasPump3() ? 'Yes' : 'No'),
-            sprintf('Has pump 4: %s', $deviceConfiguration->hasPump4() ? 'Yes' : 'No'),
-            sprintf('Has pump 5: %s', $deviceConfiguration->hasPump5() ? 'Yes' : 'No'),
-            sprintf('Has pump 6: %s', $deviceConfiguration->hasPump6() ? 'Yes' : 'No'),
-            sprintf('Has blower: %s', $deviceConfiguration->hasBlower() ? 'Yes' : 'No'),
-            sprintf('Has aux 1: %s', $deviceConfiguration->hasAux1() ? 'Yes' : 'No'),
-            sprintf('Has aux 2: %s', $deviceConfiguration->hasAux2() ? 'Yes' : 'No'),
-            sprintf('Has light 1: %s', $deviceConfiguration->hasLight1() ? 'Yes' : 'No'),
-            sprintf('Has light 2: %s', $deviceConfiguration->hasLight2() ? 'Yes' : 'No'),
+            $this->Translate('Device configuration'),
+            sprintf('%s: %s', $this->Translate('Has Mister'), $deviceConfiguration->hasMister() ? $this->Translate('Yes') : $this->Translate('No')),
+            sprintf('%s %d: %s', $this->Translate('Has Pump'), 1, $deviceConfiguration->hasPump1() ? $this->Translate('Yes') : $this->Translate('No')),
+            sprintf('%s %d: %s', $this->Translate('Has Pump'), 2, $deviceConfiguration->hasPump2() ? $this->Translate('Yes') : $this->Translate('No')),
+            sprintf('%s %d: %s', $this->Translate('Has Pump'), 3, $deviceConfiguration->hasPump3() ? $this->Translate('Yes') : $this->Translate('No')),
+            sprintf('%s %d: %s', $this->Translate('Has Pump'), 4, $deviceConfiguration->hasPump4() ? $this->Translate('Yes') : $this->Translate('No')),
+            sprintf('%s %d: %s', $this->Translate('Has Pump'), 5, $deviceConfiguration->hasPump5() ? $this->Translate('Yes') : $this->Translate('No')),
+            sprintf('%s %d: %s', $this->Translate('Has Pump'), 6, $deviceConfiguration->hasPump6() ? $this->Translate('Yes') : $this->Translate('No')),
+            sprintf('%s: %s', $this->Translate('Has Blower'), $deviceConfiguration->hasBlower() ? $this->Translate('Yes') : $this->Translate('No')),
+            sprintf('%s %d: %s', $this->Translate('Has Aux'), 1, $deviceConfiguration->hasAux1() ? $this->Translate('Yes') : $this->Translate('No')),
+            sprintf('%s %d: %s', $this->Translate('Has Aux'), 2, $deviceConfiguration->hasAux2() ? $this->Translate('Yes') : $this->Translate('No')),
+            sprintf('%s %d: %s', $this->Translate('Has Light'), 1, $deviceConfiguration->hasLight1() ? $this->Translate('Yes') : $this->Translate('No')),
+            sprintf('%s %d: %s', $this->Translate('Has Light'), 2, $deviceConfiguration->hasLight2() ? $this->Translate('Yes') : $this->Translate('No')),
         ];
 
         $this->SendDebug(__FUNCTION__, 'txt=' . print_r($popupMessage, true), 0);
         $this->PopupMessage(implode(PHP_EOL, $popupMessage));
     }
 
+    /**
+     * @param int $pump
+     *
+     * @return false|void
+     */
     private function TestTogglePump(int $pump)
     {
         if (!$this->CheckApiCallPrerequisites()) {
@@ -537,6 +552,32 @@ class BalboaSpaControlIO extends IPSModule
 
         $popupMessage = [
             'Toggle Blower',
+            $result ? 'Action successful' : 'Action not successful',
+        ];
+
+        $this->SendDebug(__FUNCTION__, 'txt=' . print_r($popupMessage, true), 0);
+        $this->PopupMessage(implode(PHP_EOL, $popupMessage));
+    }
+
+    /**
+     * @param int $light
+     *
+     * @return false|void
+     */
+    private function TestToggleLight(int $light)
+    {
+        if (!$this->CheckApiCallPrerequisites()) {
+            return false;
+        }
+
+        $client = $this->getBalboaClient();
+        $result = $client->deviceRequest(BalboaClient::TARGET_BUTTON, (string) BalboaClient::LIGHT_BUTTON_MAP[$light]);
+
+        $this->handleLastRequest($client->getApi()->getLastRequest());
+        $this->handleLastResponse($client->getApi()->getLastResponse());
+
+        $popupMessage = [
+            'Toggle Light',
             $result ? 'Action successful' : 'Action not successful',
         ];
 
@@ -737,6 +778,10 @@ class BalboaSpaControlIO extends IPSModule
 
         $this->handleLastRequest($client->getApi()->getLastRequest());
         $this->handleLastResponse($client->getApi()->getLastResponse());
+
+        if ($panelUpdate->getWifiStatus() !== PanelUpdate::WIFI_STATE_OK) {
+            return null;
+        }
 
         return $panelUpdate;
     }
