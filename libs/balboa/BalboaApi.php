@@ -41,6 +41,12 @@ class BalboaApi
      */
     private $lastResponse;
 
+    const RESPONSE_BODY_ERROR_DEVICE_NOT_CONNECTED = 'Device Not Connected';
+
+    const RESPONSE_BODY_ERRORS = [
+        self::RESPONSE_BODY_ERROR_DEVICE_NOT_CONNECTED,
+    ];
+
     /**
      * @param string $username
      * @param string $password
@@ -150,10 +156,9 @@ class BalboaApi
      */
     public function devicesSci(string $xml): BalboaApiResponse
     {
-        $headers  = [ 'Content-Type: application/xml' ];
-        $response = $this->request(self::ROUTE_DEVICES_SCI, $xml, $headers);
+        $headers = [ 'Content-Type: application/xml' ];
 
-        return $response;
+        return $this->request(self::ROUTE_DEVICES_SCI, $xml, $headers);
     }
 
     /**
@@ -198,20 +203,57 @@ class BalboaApi
         $response           = new BalboaApiResponse();
         $this->lastResponse = $response;
         $responseData       = curl_exec($ch);
+        $timeEnd            = microtime(true);
 
         $response->setUrl($url);
         $response->setHttpCode(curl_getinfo($ch, CURLINFO_HTTP_CODE));
+        $response->setBody($responseData);
         if (curl_errno($ch)) {
             $response->setError(curl_error($ch));
-        } else {
-            $response->setBody($responseData);
+        } elseif ($this->hasErrorInResponseBody($response)) {
+            $response->setError($this->getErrorFromResponseBody($response));
         }
+
         curl_close($ch);
-        $duration = round(microtime(true) - $timeStart, 2);
+        $duration = round($timeEnd - $timeStart, 2);
 
         $response->setDuration($duration);
 
         return $response;
+    }
+
+    /**
+     * @param BalboaApiResponse $response
+     *
+     * @return bool
+     */
+    private function hasErrorInResponseBody(BalboaApiResponse $response): bool
+    {
+        $hasError = false;
+        foreach (self::RESPONSE_BODY_ERRORS as $patternMessage) {
+            if (preg_match('/<desc>(' . $patternMessage . ')<\/desc>/', $response->getBody(), $matches)) {
+                $hasError = true;
+            }
+        }
+
+        return $hasError;
+    }
+
+    /**
+     * @param BalboaApiResponse $response
+     *
+     * @return string
+     */
+    private function getErrorFromResponseBody(BalboaApiResponse $response): string
+    {
+        $errorMessage = '';
+        foreach (self::RESPONSE_BODY_ERRORS as $patternMessage) {
+            if (preg_match('/<desc>(' . $patternMessage . ')<\/desc>/', $response->getBody(), $matches)) {
+                $errorMessage = $matches[1];
+            }
+        }
+
+        return $errorMessage;
     }
 
 }

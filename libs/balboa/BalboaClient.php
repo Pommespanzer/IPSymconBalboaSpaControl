@@ -154,9 +154,9 @@ class BalboaClient
     }
 
     /**
-     * @return PanelUpdate
+     * @return PanelUpdate|null
      */
-    public function getPanelUpdate(): PanelUpdate
+    public function getPanelUpdate(): ?PanelUpdate
     {
         if ($this->panelUpdate instanceof PanelUpdate) {
             return $this->panelUpdate;
@@ -171,9 +171,9 @@ class BalboaClient
     }
 
     /**
-     * @return DeviceConfiguration
+     * @return DeviceConfiguration|null
      */
-    public function getDeviceConfiguration(): DeviceConfiguration
+    public function getDeviceConfiguration(): ?DeviceConfiguration
     {
         if ($this->deviceConfiguration instanceof DeviceConfiguration) {
             return $this->deviceConfiguration;
@@ -399,6 +399,9 @@ class BalboaClient
     private function requestSciRequestGetFileCommand(string $postFields): string
     {
         $response = $this->requestDevicesSci($postFields);
+        if ($response->hasError()) {
+            throw new RuntimeException($response->getError());
+        }
 
         return $this->extractDataFromXml($response->getBody());
     }
@@ -411,6 +414,9 @@ class BalboaClient
     private function requestSciRequestDeviceRequest(string $postFields): bool
     {
         $response = $this->requestDevicesSci($postFields);
+        if ($response->hasError()) {
+            throw new RuntimeException($response->getError());
+        }
 
         return (strpos($response->getBody(), 'Command received') !== false);
     }
@@ -423,7 +429,6 @@ class BalboaClient
     private function requestDevicesSci(string $postFields): BalboaApiResponse
     {
         $response = $this->getApi()->devicesSci($postFields);
-
         if ($response->hasError()) {
             throw new RuntimeException($response->getError());
         }

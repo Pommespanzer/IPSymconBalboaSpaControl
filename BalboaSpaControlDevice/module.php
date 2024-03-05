@@ -586,10 +586,7 @@ class BalboaSpaControlDevice extends IPSModule
             return null;
         }
 
-        $panelUpdate = new DeviceConfiguration($data['byteData']);
-        $this->updatePanelData($panelUpdate);
-
-        return $panelUpdate;
+        return new DeviceConfiguration($data['byteData']);
     }
 
     /**

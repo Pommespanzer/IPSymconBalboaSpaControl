@@ -773,13 +773,14 @@ class BalboaSpaControlIO extends IPSModule
      */
     private function GetPanelUpdate(): ?PanelUpdate
     {
-        $client      = $this->getBalboaClient();
-        $panelUpdate = $client->getPanelUpdate();
+        $client       = $this->getBalboaClient();
+        $panelUpdate  = $client->getPanelUpdate();
+        $lastResponse = $client->getApi()->getLastResponse();
 
         $this->handleLastRequest($client->getApi()->getLastRequest());
-        $this->handleLastResponse($client->getApi()->getLastResponse());
+        $this->handleLastResponse($lastResponse);
 
-        if ($panelUpdate->getWifiStatus() !== PanelUpdate::WIFI_STATE_OK) {
+        if ($lastResponse->hasError() || $lastResponse->getHttpCode() !== 200 || ($panelUpdate instanceof PanelUpdate && $panelUpdate->getWifiStatus() !== PanelUpdate::WIFI_STATE_OK)) {
             return null;
         }
 
@@ -793,9 +794,14 @@ class BalboaSpaControlIO extends IPSModule
     {
         $client              = $this->getBalboaClient();
         $deviceConfiguration = $client->getDeviceConfiguration();
+        $lastResponse        = $client->getApi()->getLastResponse();
 
         $this->handleLastRequest($client->getApi()->getLastRequest());
-        $this->handleLastResponse($client->getApi()->getLastResponse());
+        $this->handleLastResponse($lastResponse);
+
+        if ($lastResponse->hasError() || $lastResponse->getHttpCode() !== 200) {
+            return null;
+        }
 
         return $deviceConfiguration;
     }
