@@ -99,7 +99,7 @@ class PanelUpdate implements \JsonSerializable
     public function getCurrentTemperature(): float
     {
         $value = $this->getByteData(7);
-        if ($value === 255) {
+        if ($value === 255) { // if the current temperature is unknown or not measured yet, return 255
             return (float) $value;
         }
 
@@ -114,7 +114,7 @@ class PanelUpdate implements \JsonSerializable
     public function getTargetTemperature(): float
     {
         $value = $this->getByteData(25);
-        if ($value === 255) {
+        if ($value === 255) { // if the target temperature is unknown or not measured yet, return 255
             return (float) $value;
         }
 

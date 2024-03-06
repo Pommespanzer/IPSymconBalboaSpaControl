@@ -527,8 +527,13 @@ class BalboaSpaControlDevice extends IPSModule
         $this->SetValue('HeatMode', $panelUpdate->getHeatMode());
         $this->SetValue('Heating', $panelUpdate->isHeating());
         $this->SetValue('TemperatureCelsius', $panelUpdate->isTemperatureScaleCelsius());
-        $this->SetValue('CurrentTemperature', $panelUpdate->getCurrentTemperature());
-        $this->SetValue('TargetTemperature', $panelUpdate->getTargetTemperature());
+        if ($panelUpdate->getCurrentTemperature() != 255) {
+            // only update the value if the temperature is known. the value 255 means, the temperature is unknown
+            $this->SetValue('CurrentTemperature', $panelUpdate->getCurrentTemperature());
+        }
+        if ($panelUpdate->getTargetTemperature() != 255) {
+            $this->SetValue('TargetTemperature', $panelUpdate->getTargetTemperature());
+        }
         $this->SetValue('TemperatureRange', $panelUpdate->getTemperatureRange());
         $this->SetValue('FilterMode', $panelUpdate->getFilterMode());
         $this->SetValue('Blower', $panelUpdate->getBlowerStatus());
